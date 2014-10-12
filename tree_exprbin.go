@@ -221,7 +221,7 @@ func main(){
 	fmt.Println("--- Normal")
 	ttt.init( "10 + 9 * 10 + 2")
 	fmt.Println("preOrder : ", ttt.toPre() );
-	fmt.Println("preOrder : ", ttt.toPost() );
+	fmt.Println("postOrder : ", ttt.toPost() );
 
 	fmt.Println("--- Error")
 	ttt.init( "10 + 100 * 2 20")
