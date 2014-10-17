@@ -172,7 +172,7 @@ func ( d *Dictionary ) find_checkTime( word string ) (int, string ){
 	var p, r = d.find( word )
 	var end_timestamp int64 = makeTimestamp();
 
-	fmt.Println( "find : ", ( end_timestamp - start_timestamp ),"ms" );
+	fmt.Println( "find : ", ( end_timestamp - start_timestamp ),"us" );
 
 	return p, r 
 
@@ -186,7 +186,13 @@ func( d *Dictionary ) dump() {
 
 func( d *Dictionary ) statics() ( t int, n int, b int ){
 
-	return d.root.statics( 0, 0, -1 )
+	var rt, rn, rb = d.root.statics( 0,0,-1 )
+
+	fmt.Println( "total link cnt : ", rt )
+	fmt.Println( "total none node link cnt : ", rn )
+	fmt.Println( "total empty node link cnt : ", rb )
+
+	return rt,rn,rb
 
 }
 // Tri source
@@ -214,7 +220,7 @@ func forceFind( word string ) string{
 
 	var end_timestamp int64 = makeTimestamp();
 
-	fmt.Println( "find : " , ( end_timestamp - start_timestamp ),"ms" );
+	fmt.Println( "find : " , ( end_timestamp - start_timestamp ),"us" );
 
 	if finded != -1 {
 		return descripts[finded];
@@ -243,7 +249,7 @@ func Readln(r *bufio.Reader) (string, error) {
 }
 
 func makeTimestamp() int64 {
-    return time.Now().UnixNano()  // / int64(time.Millisecond)
+    return time.Now().UnixNano() // / int64(time.Millisecond)
 }
 
 func loadDictionary( d *Dictionary ){
@@ -288,12 +294,21 @@ func loadDictionary( d *Dictionary ){
 
 	var end_timestamp int64 = makeTimestamp();
 
-	fmt.Println("Dictionary load time ", ( end_timestamp - start_timestamp ), "ms" );
+	fmt.Println("Dictionary load time ", ( end_timestamp - start_timestamp ), "us" );
 
 }
 // External Dictionary load
 ////////////////////////////////////////////////////////////
 
+func checkfineTimeout( d *Dictionary, word string ){
+
+	fmt.Println( "---------- tri " )
+	fmt.Println( d.find_checkTime( word ) )
+	fmt.Println( "---------- array " )
+	fmt.Println( forceFind( word ) )
+
+
+}
 
 func main(){
 
@@ -314,20 +329,15 @@ func main(){
 
 
 	var d_full *Dictionary = createDictionary();
-	loadDictionary(d_full);
-	fmt.Println( d_full.find_checkTime("disket") )
-	fmt.Println( forceFind("disket") )
-	fmt.Println( d_full.find_checkTime("apple") )
-	fmt.Println( forceFind("apple") )
-	fmt.Println( d_full.find_checkTime("history") )
-	fmt.Println( forceFind("history") )
-	fmt.Println( d_full.find_checkTime("zoo") )
-	fmt.Println( forceFind("zoo") )
+	loadDictionary(d_full)
 
-	fmt.Println("Statics ---------")
-	fmt.Println( d_full.statics() )
+	checkfineTimeout( d_full, "disket" )
+	checkfineTimeout( d_full, "apple" )
+	checkfineTimeout( d_full, "history" )
+	checkfineTimeout( d_full, "zoo" )
 
-
+	fmt.Println("---Statics ---------")
+	d_full.statics()
 
 
 }
