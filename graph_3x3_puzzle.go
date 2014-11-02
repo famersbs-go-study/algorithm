@@ -2,16 +2,7 @@ package main
 
 import(
 	"fmt"
-	//"math"
 )
-
-func max( f int, s int ) int {
-	if f >= s {
-		return f
-	}else{
-		return s
-	}
-}
 
 func main(){
 
@@ -24,6 +15,5 @@ func main(){
 
 	fmt.Println("buffer ", buffer );
 	fmt.Println("buffer slice ", slice_buf );
-	fmt.Println("max ", max( 10, 1000 ) );
 
 }
